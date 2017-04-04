@@ -6,6 +6,29 @@ import { MapView } from 'expo'
 
 class BookmarkShow extends Component {
 
+  constructor() {
+    super()
+    this.mapRef = null
+    this.formAction = 'create'
+  }
+
+  componentWillMount() {
+    const { bookmark } = this.props
+
+    if (bookmark) {
+      this.props.loadBookmark({ coordinate: bookmark.coordinate, title: bookmark.title})
+      this.formAction = 'update'
+    } else {
+      this.props.resetMarker()
+    }
+  }
+
+  componentDidMount() {
+    if (this.formAction === 'update' && this.mapRef && this.props.marker) {
+      setTimeout(() => this.mapRef.fitToElements(false), 2000)
+    }
+  }
+
   handleOnChangeTitle = (title) => {
     this.props.changeTitle(title)
   }
@@ -15,7 +38,13 @@ class BookmarkShow extends Component {
   }
 
   handleOnSave = () => {
-    this.props.save(this.props.marker)
+    const { bookmark, marker } = this.props
+
+    if (this.formAction === 'create') {
+      this.props.save(marker)
+    } else {
+      this.props.update(bookmark.uid, marker)
+    }
   }
 
   render() {
@@ -37,6 +66,7 @@ class BookmarkShow extends Component {
         </View>
         <MapView
           style={{ flex: 1 }}
+          ref={ref => this.mapRef = ref}
           showsUserLocation
           followUserLocation
           loadingEnabled
