@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux'
+import BookmarkShowReducer from './BookmarkShowReducer';
 
 export default combineReducers({
-  banana: () => ({}),
+  bookmarkShow: BookmarkShowReducer,
 })

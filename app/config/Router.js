@@ -10,14 +10,14 @@ const RouterComponent = () => (
 
     <Scene key="main">
       <Scene
+        initial
         key="bookmarkList"
         component={BookmarkList}
         title="Bookmarks"
         rightTitle="Add"
-        onRight={() => Actions.employeeCreate()}
+        onRight={() => Actions.bookmarkShow()}
       />
       <Scene
-        initial
         key="bookmarkShow"
         component={BookmarkShow}
         title="Bookmark"
